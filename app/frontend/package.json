@@ -1,0 +1,9 @@
+{
+  "name": "neurodev-frontend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Dependency-free chat interface served by the NeuroDev API.",
+  "scripts": {
+    "check": "node --check public/app.js"
+  }
+}

@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#111110" />
+    <meta name="description" content="A thoughtful AI workspace for your development work." />
+    <title>NeuroDev — your thinking partner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;450;500;550;600;650;700&family=Manrope:wght@400;500;600;650;700;750;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=password-visibility-1" />
+    <script src="app.js?v=password-visibility-1" defer></script>
+  </head>
+  <body>
+    <section class="auth-screen" id="auth-screen" hidden aria-labelledby="auth-title">
+      <div class="auth-card">
+        <a class="brand auth-brand" href="#" aria-label="NeuroDev home">
+          <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+          <span>neuro<span class="brand-light">dev</span></span>
+        </a>
+        <p class="dialog-eyebrow">YOUR DEVELOPMENT THINKING PARTNER</p>
+        <h1 id="auth-title">Welcome back.</h1>
+        <p class="dialog-description" id="auth-description">Sign in to continue to your private workspace.</p>
+        <form id="auth-form" novalidate>
+          <label class="field-label" id="auth-name-label" for="auth-name">Your name</label>
+          <input class="dialog-input" id="auth-name" name="name" type="text" maxlength="80" autocomplete="name" />
+          <label class="field-label" for="auth-email">Email address</label>
+          <input class="dialog-input" id="auth-email" name="email" type="email" maxlength="254" autocomplete="email" required />
+          <p class="auth-email-warning" id="auth-email-warning" role="status" hidden>
+            <span id="auth-email-warning-text"></span>
+            <button id="auth-email-correct" type="button">Use suggested address</button>
+          </p>
+          <label class="field-label" id="auth-code-label" for="auth-code" hidden>Six-digit code</label>
+          <input class="dialog-input auth-code-input" id="auth-code" name="code" type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" autocomplete="one-time-code" placeholder="000000" hidden />
+          <label class="field-label" id="auth-password-label" for="auth-password">Password</label>
+          <div class="auth-password-field">
+            <input class="dialog-input" id="auth-password" name="password" type="password" maxlength="128" autocomplete="current-password" required />
+            <button class="password-visibility" id="auth-password-visibility" type="button" aria-label="Show password" aria-pressed="false">
+              <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10s2.9-5 8-5 8 5 8 5-2.9 5-8 5-8-5-8-5Z"/><circle cx="10" cy="10" r="2.2"/></svg>
+            </button>
+          </div>
+          <small class="auth-password-hint" id="auth-password-hint" hidden>Use at least 8 characters. No special characters are required.</small>
+          <p class="auth-message" id="auth-message" role="status" aria-live="polite" hidden></p>
+          <button class="dialog-submit" id="auth-submit" type="submit">Sign in <span class="submit-arrow"></span></button>
+        </form>
+        <button class="auth-resend" id="auth-forgot-password" type="button" hidden>Forgot your password?</button>
+        <button class="auth-resend" id="auth-resend" type="button" hidden>Resend verification code</button>
+        <button class="auth-resend" id="auth-reset-resend" type="button" hidden>Send a new password reset code</button>
+        <p class="auth-toggle-copy" id="auth-toggle-copy">New to NeuroDev? <button id="auth-toggle" type="button">Create an account</button></p>
+        <p class="auth-security-note">Your password is protected and never sent by email.</p>
+      </div>
+    </section>
+
+    <div class="app-shell" id="app-shell" hidden>
+      <aside class="sidebar" id="sidebar" aria-label="Conversation sidebar">
+        <div class="sidebar-top">
+          <a class="brand" href="#" aria-label="NeuroDev home">
+            <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+            <span>neuro<span class="brand-light">dev</span></span>
+          </a>
+          <button class="icon-button sidebar-close" id="sidebar-close" type="button" aria-label="Close sidebar"></button>
+        </div>
+
+        <button class="new-chat-button" id="new-chat" type="button"></button>
+
+        <label class="search-box">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="history-search" type="search" placeholder="Search conversations" autocomplete="off" />
+          <kbd>Ctrl K</kbd>
+        </label>
+
+        <div class="history-heading"><span>YOUR WORKSPACE</span></div>
+        <nav class="history-list" id="history-list" aria-label="Chat history"></nav>
+
+        <div class="sidebar-bottom">
+          <div class="workspace-card">
+            <span class="workspace-orb" aria-hidden="true"></span>
+            <span class="workspace-copy"><strong>Thoughtful by design</strong><small>Your ideas stay yours.</small></span>
+            <span class="privacy-check" aria-label="Local profile"></span>
+          </div>
+          <button class="profile-button" id="profile-button" type="button">
+            <span class="avatar" id="avatar-initials">N</span>
+            <span class="profile-copy"><strong id="profile-name">Your profile</strong><small id="profile-caption">Set up your profile</small></span>
+            <span class="profile-more" aria-hidden="true"></span>
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="topbar-left">
+            <button class="icon-button mobile-menu" id="mobile-menu" type="button" aria-label="Open sidebar"></button>
+            <span class="mobile-brand">Neuro<span>Dev</span></span>
+            <span class="topbar-divider"></span>
+            <button class="model-picker" id="model-picker" type="button" aria-label="Current assistant model">
+              <span class="status-dot"></span>
+              <span>NeuroDev assistant</span>
+              <span class="chevron"></span>
+            </button>
+          </div>
+          <div class="topbar-right">
+            <span class="private-label"><span class="lock-icon" aria-hidden="true"></span> Private workspace</span>
+            <button class="admin-toolbar-button" id="admin-roster-toolbar" type="button" hidden>Users &amp; CSV</button>
+            <button class="icon-button topbar-profile" id="topbar-profile" type="button" aria-label="Your profile"></button>
+          </div>
+        </header>
+
+        <section class="conversation" id="conversation" aria-live="polite">
+          <div class="welcome" id="welcome">
+            <div class="welcome-eyebrow"><span class="eyebrow-line"></span> YOUR DEVELOPMENT THINKING PARTNER</div>
+            <div class="welcome-emblem" aria-hidden="true">
+              <span class="emblem-ring ring-one"></span><span class="emblem-ring ring-two"></span>
+              <span class="emblem-core"><span class="brand-mark"><span></span><span></span><span></span><span></span></span></span>
+            </div>
+            <h1>Make space for<br /><span>better thinking.</span></h1>
+            <p class="welcome-description">A second brain for the ideas, decisions, and questions behind your code.</p>
+            <div class="suggestion-grid" id="suggestion-grid">
+              <button class="suggestion-card" type="button" data-prompt="Help me think through the architecture for a new feature.">
+                <span class="suggestion-icon icon-architecture"></span>
+                <span><strong>Think through an idea</strong><small>Explore architecture &amp; trade-offs</small></span>
+                <span class="suggestion-arrow"></span>
+              </button>
+              <button class="suggestion-card" type="button" data-prompt="Help me make sense of a difficult technical decision.">
+                <span class="suggestion-icon icon-decisions"></span>
+                <span><strong>Untangle a decision</strong><small>See the options more clearly</small></span>
+                <span class="suggestion-arrow"></span>
+              </button>
+              <button class="suggestion-card" type="button" data-prompt="Help me debug a problem. I’ll share what I’ve tried and what I’m seeing.">
+                <span class="suggestion-icon icon-debug"></span>
+                <span><strong>Work through a bug</strong><small>Get unstuck, step by step</small></span>
+                <span class="suggestion-arrow"></span>
+              </button>
+              <button class="suggestion-card" type="button" data-prompt="Help me plan my next development sprint.">
+                <span class="suggestion-icon icon-plan"></span>
+                <span><strong>Find a starting point</strong><small>Turn a big task into a plan</small></span>
+                <span class="suggestion-arrow"></span>
+              </button>
+            </div>
+          </div>
+          <div class="message-list" id="message-list" hidden></div>
+        </section>
+
+        <section class="composer-area" aria-label="Write a message">
+          <div class="voice-panel" id="voice-panel" hidden aria-live="polite">
+            <div class="voice-orb" aria-hidden="true">
+              <span class="voice-wave"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+            </div>
+            <span class="voice-panel-status" id="voice-status">I’m listening</span>
+            <p class="voice-panel-transcript" id="voice-transcript">Speak naturally, then select “Done speaking” to transcribe.</p>
+            <button class="voice-stop-button" id="voice-stop" type="button" aria-label="Finish voice input">
+              <span class="voice-stop-icon" aria-hidden="true"></span>
+              <span>Done speaking</span>
+            </button>
+          </div>
+          <form class="composer" id="composer-form">
+            <label class="sr-only" for="message-input">Message NeuroDev</label>
+            <div class="attachment-list" id="attachment-list" hidden aria-label="Attached photos"></div>
+            <textarea id="message-input" rows="1" placeholder="Ask anything, or share what's on your mind..."></textarea>
+            <div class="composer-toolbar">
+              <div class="composer-tools">
+                <button class="tool-button" id="attach-button" type="button" aria-label="Add photos" title="Attach photos"><span class="plus-icon"></span><span>Photos</span></button>
+                <input class="sr-only" id="image-input" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+                <button class="tool-button" id="attach-pdf-button" type="button" aria-label="Add PDF" title="Attach PDF"><span class="plus-icon"></span><span>PDF</span></button>
+                <input class="sr-only" id="pdf-input" type="file" accept="application/pdf,.pdf" multiple />
+                <span class="toolbar-separator"></span>
+                <span class="composer-hint">A space to think out loud</span>
+              </div>
+              <div class="composer-actions">
+                <button class="icon-button voice-button" id="voice-button" type="button" aria-label="Start voice input" title="Voice input"></button>
+                <button class="send-button" id="send-button" type="submit" aria-label="Send message" disabled></button>
+              </div>
+            </div>
+          </form>
+          <p class="composer-disclaimer">NeuroDev can make mistakes. Check important information.</p>
+        </section>
+      </main>
+    </div>
+
+    <div class="sidebar-scrim" id="sidebar-scrim"></div>
+    <div class="toast-region" id="toast-region" aria-live="assertive"></div>
+
+    <dialog class="profile-dialog" id="profile-dialog">
+      <form class="dialog-content" id="profile-form">
+        <button class="dialog-close icon-button" id="profile-close" type="button" aria-label="Close"></button>
+        <span class="dialog-emblem" aria-hidden="true"><span class="brand-mark"><span></span><span></span><span></span><span></span></span></span>
+        <p class="dialog-eyebrow">YOUR PERSONAL WORKSPACE</p>
+        <h2>A little about you.</h2>
+        <p class="dialog-description">Set a name for your NeuroDev profile. Your profile and conversations are saved in this browser.</p>
+        <label class="field-label" for="profile-name-input">Your name</label>
+        <input class="dialog-input" id="profile-name-input" name="name" type="text" maxlength="60" placeholder="What should we call you?" required />
+        <p class="local-profile-note" id="local-profile-note"><span class="lock-icon" aria-hidden="true"></span> This name is saved only in this browser.</p>
+        <button class="dialog-submit" type="submit">Save my profile <span class="submit-arrow"></span></button>
+        <div class="account-session" id="account-session" hidden>
+          <span id="account-email"></span>
+          <button class="auth-resend" id="admin-roster-open" type="button" hidden>View users &amp; export CSV</button>
+          <button class="auth-resend sign-out-button" id="sign-out-button" type="button">Sign out</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog class="profile-dialog admin-dialog" id="admin-dialog">
+      <div class="dialog-content">
+        <button class="dialog-close icon-button" id="admin-close" type="button" aria-label="Close"></button>
+        <p class="dialog-eyebrow">ADMINISTRATOR VIEW</p>
+        <h2>Registered accounts</h2>
+        <p class="dialog-description">Names, email addresses, verification, and login dates only. Passwords and password hashes are never displayed. Conversations stay in each user’s browser and are not available in this roster.</p>
+        <div class="admin-summary" id="admin-summary" hidden aria-label="Account summary">
+          <div class="admin-summary-card"><strong id="admin-total">0</strong><span>Total accounts</span></div>
+          <div class="admin-summary-card"><strong id="admin-verified">0</strong><span>Verified</span></div>
+          <div class="admin-summary-card"><strong id="admin-logged-in">0</strong><span>Ever signed in</span></div>
+        </div>
+        <button class="admin-export" id="admin-export" type="button" hidden>Export safe user list (CSV)</button>
+        <p class="admin-roster-status" id="admin-roster-status" role="status" aria-live="polite"></p>
+        <div class="admin-roster" id="admin-roster"></div>
+      </div>
+    </dialog>
+  </body>
+</html>
